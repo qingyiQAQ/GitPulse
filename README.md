@@ -231,8 +231,8 @@ GitPulse 的 RAG 场景：**历史摘要 + 用户偏好** 沉淀为知识库，�
 | 模块 | 首选方案 | 备选 / 演进 | 说明 |
 |---|---|---|---|
 | **语言** | Go 1.22+ | — | 强类型、编译期校验、单二进制部署，契合「稳定可控」 |
-| **模型** | Claude（Anthropic API） | 分层路由：mini 模型做分类，大模型做摘要 | 成本可控是关键 |
-| **Agent 框架** | **手写循环**（不引入重框架） | 可选接 Anthropic/OpenAI Go SDK | Go 生态无 LangGraph 等价物，手写循环反而更契合学习「本质」 |
+| **模型** | DeepSeek（OpenAI 兼容 API） | 分层路由：mini 模型做分类，大模型做摘要 | 成本可控是关键 |
+| **Agent 框架** | **手写循环**（不引入重框架） | 可选接 OpenAI 兼容 Go SDK | Go 生态无 LangGraph 等价物，手写循环反而更契合学习「本质」 |
 | **结构化输出** | Go `struct` + `encoding/json` | `invopop/jsonschema` 生成 JSON Schema | 编译期类型安全 |
 | **GitHub 数据** | `google/go-github` | 手写 REST client（阶段一可先用 stdlib `net/http`） | 注意限流 |
 | **向量库（RAG）** | Qdrant / Weaviate | pgvector / Milvus | 阶段二引入 |
@@ -370,7 +370,7 @@ GitPulse/
 ```bash
 # 1. 配置环境变量（复制示例文件后填入真实值）
 cp .env.example .env
-#   编辑 .env，填入 ANTHROPIC_API_KEY、GITHUB_TOKEN 等
+#   编辑 .env，填入 DEEPSEEK_API_KEY、GITHUB_TOKEN 等
 
 # 2. 校验框架可编译（当前为骨架，应能通过）
 go build ./...
@@ -387,7 +387,7 @@ go vet ./...
 
 ### 下一步（M1 待补齐的实现）
 
-1. `internal/model/client.go` → 补 Anthropic HTTP 客户端，实现 `Complete` / `CompleteJSON`
+1. `internal/model/client.go` → 补 DeepSeek HTTP 客户端，实现 `Complete` / `CompleteJSON`
 2. `internal/tools/*.go` → 补四个工具的 `Run` 与强类型入口
 3. `internal/agent/pipeline.go` → 补「采集→判断→摘要→推送」六步编排
 4. `cmd/gitpulse/main.go` → 补依赖装配

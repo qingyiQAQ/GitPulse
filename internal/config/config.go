@@ -9,9 +9,9 @@ package config
 // 字段即「契约」：任何新增可配置项都应显式声明在此结构体中，
 // 而不是散落在各包的代码里通过 os.Getenv 各取所需——集中管理才能保证一致性与可审计。
 type Config struct {
-	// AnthropicAPIKey 是 LLM 服务（Anthropic）的访问密钥。
+	// DeepSeekAPIKey 是 LLM 服务（DeepSeek）的访问密钥。
 	// 必填：缺失时 Load 必须返回错误，拒绝以残缺配置启动。
-	AnthropicAPIKey string
+	DeepSeekAPIKey string
 
 	// GitHubToken 是 GitHub API 的访问令牌。
 	// 可选：未配置时仍可用匿名访问，但限流额度更低、抓取更容易被限。
@@ -33,7 +33,7 @@ type Config struct {
 // 任一必填项缺失或非法，直接返回 error，绝不返回半成品配置。
 func Load() (*Config, error) {
 	// TODO(阶段一): 实现真正的读取与校验。
-	//   1. 读取 ANTHROPIC_API_KEY（必填）、GITHUB_TOKEN、PUSH_CHANNEL、RELEVANCE_THRESHOLD
+	//   1. 读取 DEEPSEEK_API_KEY（必填）、GITHUB_TOKEN、PUSH_CHANNEL、RELEVANCE_THRESHOLD
 	//   2. 解析 RELEVANCE_THRESHOLD 为 float64，非法值报错
 	//   3. 校验必填项，缺失时返回含字段名的明确错误（便于定位）
 	//   4. 设置默认值：PushChannel 默认 "console"、阈值默认 0.7
